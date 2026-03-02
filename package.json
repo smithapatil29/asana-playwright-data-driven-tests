@@ -1,0 +1,30 @@
+{
+  "name": "asana-playwright-data-driven-tests",
+  "version": "1.0.0",
+  "description": "Hybrid Playwright data-driven UI automation suite in TypeScript",
+  "scripts": {
+    "clean:reports": "rimraf allure-results allure-report playwright-report test-results",
+    "clean:reports:docker": "rimraf allure-results/* allure-report/* playwright-report/* test-results/*",
+    "test:allure": "npm run clean:reports && node scripts/run-playwright-with-allure-env.js",
+    "test:allure:web": "npm run clean:reports && cross-env TARGET_PROJECT=\"Web Application\" node scripts/run-playwright-with-allure-env.js",
+    "test:allure:mobile": "npm run clean:reports && cross-env TARGET_PROJECT=\"Mobile Application\" node scripts/run-playwright-with-allure-env.js",
+    "test:allure:docker": "npm run clean:reports:docker && node scripts/run-playwright-with-allure-env.js",
+    "test:allure:docker:web": "npm run clean:reports:docker && cross-env TARGET_PROJECT=\"Web Application\" node scripts/run-playwright-with-allure-env.js",
+    "test:allure:docker:mobile": "npm run clean:reports:docker && cross-env TARGET_PROJECT=\"Mobile Application\" node scripts/run-playwright-with-allure-env.js",
+    "allure:generate": "allure generate allure-results --clean -o allure-report --name \"asana-playwright-data-driven-tests\"",
+    "allure:open": "allure open allure-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "allure-commandline": "^2.37.0",
+    "allure-playwright": "^3.5.0",
+    "cross-env": "^10.1.0",
+    "rimraf": "^6.1.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

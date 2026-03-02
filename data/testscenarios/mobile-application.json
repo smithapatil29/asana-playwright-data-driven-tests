@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "name": "Mobile App - Push notification system",
+    "project": "Mobile Application",
+    "task": "Push notification system",
+    "column": "To Do",
+    "tags": ["Feature"]
+  },
+  {
+    "id": 2,
+    "name": "Mobile App - Offline mode",
+    "project": "Mobile Application",
+    "task": "Offline mode",
+    "column": "In Progress",
+    "tags": ["Feature", "High Priority"]
+  },
+  {
+    "id": 3,
+    "name": "Mobile App - App icon design",
+    "project": "Mobile Application",
+    "task": "App icon design",
+    "column": "Done",
+    "tags": ["Design"]
+  },
+  {
+    "id": 201,
+    "name": "Mobile App Negative - Wrong tag for valid task",
+    "project": "Mobile Application",
+    "task": "Push notification system",
+    "column": "To Do",
+    "tags": ["FeatureZZ"],
+    "expectedResult": "negative",
+    "negativeCheck": "missingTags"
+  },
+  {
+    "id": 202,
+    "name": "Mobile App Negative - Task should not be in wrong column",
+    "project": "Mobile Application",
+    "task": "Offline mode",
+    "column": "Done",
+    "tags": [],
+    "expectedResult": "negative",
+    "negativeCheck": "taskNotInColumn"
+  },
+  {
+    "id": 203,
+    "name": "Mobile App Negative - Non-existent task",
+    "project": "Mobile Application",
+    "task": "Non-existent mobile task",
+    "column": "To Do",
+    "tags": [],
+    "expectedResult": "negative",
+    "negativeCheck": "taskNotFound"
+  },
+  {
+    "id": 204,
+    "name": "Mobile App Negative - Missing required tag",
+    "project": "Mobile Application",
+    "task": "App icon design",
+    "column": "Done",
+    "tags": ["High Priority"],
+    "expectedResult": "negative",
+    "negativeCheck": "missingTags"
+  },
+  {
+    "id": 205,
+    "name": "Mobile App Negative - Wrong project label",
+    "project": "Mobile ApplicationXYZ",
+    "task": "Offline mode",
+    "column": "In Progress",
+    "tags": ["Feature"],
+    "expectedResult": "negative",
+    "negativeCheck": "projectNotFound"
+  }
+]

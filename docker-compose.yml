@@ -1,0 +1,43 @@
+services:
+  tests-all:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: asana-tests-all
+    working_dir: /app
+    command: npm run test:allure:docker
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
+
+  tests-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: asana-tests-web
+    working_dir: /app
+    environment:
+      TARGET_PROJECT: Web Application
+    command: npm run test:allure:docker:web
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
+
+  tests-mobile:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: asana-tests-mobile
+    working_dir: /app
+    environment:
+      TARGET_PROJECT: Mobile Application
+    command: npm run test:allure:docker:mobile
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
