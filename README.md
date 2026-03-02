@@ -2,9 +2,8 @@
 
 Playwright + TypeScript data-driven UI automation with Allure reporting.
 
-## Command Matrix
-For complete copy/paste command combinations (Local + Docker, all browser/app permutations), use:
-- [COMMANDS_REFERENCE.md](COMMANDS_REFERENCE.md)
+## Commands : copy/paste command combinations (Local + Docker, all browser/app permutations) 
+- Check: [COMMANDS_REFERENCE.md](COMMANDS_REFERENCE.md)
 
 ## Prerequisites
 - Node.js 18+
@@ -12,7 +11,8 @@ For complete copy/paste command combinations (Local + Docker, all browser/app pe
 - npx playwirght install
 
 ## Security note: 
-Note: `credentials.email` and `credentials.password` in the project-run-config.json are masked (`********`)- - Replace both with valid values before running tests.
+Note: `credentials.email` and `credentials.password` in the project-run-config.json are masked (`********`)- 
+- Replace both with valid values before running tests.
 
 ## Quick Start
 All commands run across 3 browser projects by default: `chrome`, `firefox`, and `webkit`.
@@ -41,18 +41,10 @@ Project and credential settings are in [data/project-run-config.json](data/proje
 - `targetProjectDefault`: default filter when `TARGET_PROJECT` is not set.
 
 
-
 Scenario data files:
 - [data/testscenarios/web-application.json](data/testscenarios/web-application.json)
 - [data/testscenarios/mobile-application.json](data/testscenarios/mobile-application.json)
 
-Each scenario can be:
-- Positive (default): validates expected task/column/tags.
-- Negative: set `expectedResult: "negative"` and one `negativeCheck`:
-	- `taskNotFound`
-	- `taskNotInColumn`
-	- `missingTags`
-	- `projectNotFound`
 
 ## Project Structure
 - [playwright.config.ts](playwright.config.ts): Playwright configuration
@@ -65,7 +57,11 @@ Current data set includes:
 - Web Application: 3 positive + 5 negative scenarios
 - Mobile Application: 3 positive + 5 negative scenarios
 
-## Troubleshooting
-- Avoid running tests with `--reporter=list` if you want Allure artifacts. That override disables configured reporters.
-- If project filtering behaves unexpectedly in a terminal session, clear/reset `TARGET_PROJECT` before running.
-- All `test:allure*` scripts auto-generate `allure-results/environment.properties` before Playwright starts, so the Allure Environment section shows run metadata (target project, browser, base URL, run mode, OS, Node, CI).
+
+Each scenario can be:
+- Positive (default): validates expected task/column/tags.
+- Negative: set `expectedResult: "negative"` and one `negativeCheck`:
+	- `taskNotFound`
+	- `taskNotInColumn`
+	- `missingTags`
+	- `projectNotFound`
