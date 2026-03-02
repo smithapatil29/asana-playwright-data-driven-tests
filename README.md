@@ -12,7 +12,7 @@ Playwright + TypeScript data-driven UI automation with Allure reporting.
 - npx playwirght install
 
 ## Security note: 
-Note: `credentials.email` and `credentials.password` in the [playwright.config.ts] are masked (`********`)- 
+Note: `credentials.email` and `credentials.password` in the [project-run-config.json] are masked (`********`)- 
 - Replace both with valid values before running tests.
 
 ## Quick Start
