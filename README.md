@@ -40,17 +40,16 @@ Project and credential settings are in [data/project-run-config.json](data/proje
 - `credentials.email` / `credentials.password`: login credentials.
 - `targetProjectDefault`: default filter when `TARGET_PROJECT` is not set.
 
-
-Scenario data files:
-- [data/testscenarios/web-application.json](data/testscenarios/web-application.json)
-- [data/testscenarios/mobile-application.json](data/testscenarios/mobile-application.json)
-
-
 ## Project Structure
 - [playwright.config.ts](playwright.config.ts): Playwright configuration
 - [data/testscenarios](data/testscenarios): category-specific scenario files
 - [src/pages](src/pages): page objects (`LoginPage`, `BoardPage`)
 - [tests/datadrivenTests.spec.ts](tests/datadrivenTests.spec.ts): dynamic test generation from JSON
+
+
+Scenario data files:
+- [data/testscenarios/web-application.json](data/testscenarios/web-application.json)
+- [data/testscenarios/mobile-application.json](data/testscenarios/mobile-application.json)
 
 ## Covered test cases
 Current data set includes:
