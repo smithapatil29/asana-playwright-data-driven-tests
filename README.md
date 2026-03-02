@@ -2,7 +2,8 @@
 
 Playwright + TypeScript data-driven UI automation with Allure reporting.
 
-## Commands : copy/paste command combinations (Local + Docker, all browser/app permutations) 
+## Commands for reference : Copy Paste
+- combinations (Local + Docker, all browser/app permutations) 
 - Check: [COMMANDS_REFERENCE.md](COMMANDS_REFERENCE.md)
 
 ## Prerequisites
@@ -47,7 +48,7 @@ Project and credential settings are in [data/project-run-config.json](data/proje
 - [tests/datadrivenTests.spec.ts](tests/datadrivenTests.spec.ts): dynamic test generation from JSON
 
 
-Scenario data files:
+## Scenario data files:
 - [data/testscenarios/web-application.json](data/testscenarios/web-application.json)
 - [data/testscenarios/mobile-application.json](data/testscenarios/mobile-application.json)
 
