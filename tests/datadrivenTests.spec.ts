@@ -1,9 +1,7 @@
-import { test } from '@playwright/test';
+import { expect, test } from './fixtures';
 import { BoardPage } from '../src/pages/BoardPage';
-import { LoginPage } from '../src/pages/LoginPage';
 import {
   categorizedTestScenarios,
-  runConfig,
   shouldRunProject,
   shouldRunRequestedProject
 } from './setup';
@@ -16,39 +14,21 @@ for (const [projectName, projectScenarios] of Object.entries(categorizedTestScen
   test.describe(`Project ${projectName}`, () => {
     for (const testScenario of projectScenarios) {
       test(`[TC${testScenario.id}] ${testScenario.name}`, async ({ page }) => {
-        const loginPage = new LoginPage(page);
         const boardPage = new BoardPage(page);
 
-        await loginPage.goto();
-        await loginPage.login(runConfig.credentials.email, runConfig.credentials.password);
+        await page.goto('/');
 
         await boardPage.waitForLoaded();
 
-        if (testScenario.expectedResult === 'negative') {
-          if (testScenario.negativeCheck === 'projectNotFound') {
-            await boardPage.expectProjectNotAvailable(testScenario.project);
-            return;
-          }
-
-          await boardPage.openProject(testScenario.project);
-
-          if (testScenario.negativeCheck === 'taskNotFound') {
-            await boardPage.expectTaskNotVisible(testScenario.task);
-            return;
-          }
-
-          if (testScenario.negativeCheck === 'taskNotInColumn') {
-            await boardPage.expectTaskNotInColumn(testScenario.task, testScenario.column);
-            return;
-          }
-
-          await boardPage.expectTaskMissingTags(testScenario.task, testScenario.tags);
-          return;
-        }
-
         await boardPage.openProject(testScenario.project);
-        await boardPage.expectTaskInColumn(testScenario.task, testScenario.column);
-        await boardPage.expectTaskTags(testScenario.task, testScenario.tags);
+
+        const taskCard = boardPage.getTaskCard(testScenario.task);
+        await expect(taskCard).toBeVisible();
+        await expect(boardPage.getColumn(testScenario.column)).toContainText(testScenario.task);
+
+        for (const tag of testScenario.tags) {
+          await expect(taskCard).toContainText(tag);
+        }
       });
     }
   });

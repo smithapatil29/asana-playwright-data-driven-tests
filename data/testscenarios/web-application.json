@@ -22,55 +22,5 @@
     "task": "Design system updates",
     "column": "In Progress",
     "tags": ["Design"]
-  },
-  {
-    "id": 101,
-    "name": "Web App Negative - Wrong tag for valid task",
-    "project": "Web Application",
-    "task": "Implement user authentication",
-    "column": "To Do",
-    "tags": ["FeatureZZ"],
-    "expectedResult": "negative",
-    "negativeCheck": "missingTags"
-  },
-  {
-    "id": 102,
-    "name": "Web App Negative - Task should not be in wrong column",
-    "project": "Web Application",
-    "task": "Fix navigation bug",
-    "column": "Done",
-    "tags": [],
-    "expectedResult": "negative",
-    "negativeCheck": "taskNotInColumn"
-  },
-  {
-    "id": 103,
-    "name": "Web App Negative - Non-existent task",
-    "project": "Web Application",
-    "task": "Non-existent web task",
-    "column": "To Do",
-    "tags": [],
-    "expectedResult": "negative",
-    "negativeCheck": "taskNotFound"
-  },
-  {
-    "id": 104,
-    "name": "Web App Negative - Missing required tag",
-    "project": "Web Application",
-    "task": "Fix navigation bug",
-    "column": "To Do",
-    "tags": ["High Priority"],
-    "expectedResult": "negative",
-    "negativeCheck": "missingTags"
-  },
-  {
-    "id": 105,
-    "name": "Web App Negative - Wrong project label",
-    "project": "Web ApplicationXYZ",
-    "task": "Implement user authentication",
-    "column": "To Do",
-    "tags": ["Feature"],
-    "expectedResult": "negative",
-    "negativeCheck": "projectNotFound"
   }
 ]

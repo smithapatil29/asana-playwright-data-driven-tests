@@ -32,11 +32,9 @@ Note: Docker services use Docker-safe scripts that clean report folder contents 
 
 ## Config
 Project and credential settings are in [data/project-run-config.json](data/project-run-config.json):
-- `execution.all`: when `true`, runs both Web and Mobile projects.
-- `execution.webApplication`: enable/disable Web project when `execution.all` is `false`.
-- `execution.mobileApplication`: enable/disable Mobile project when `execution.all` is `false`.
-- `browsers.all`: when `true`, runs all browser projects (`chrome`, `firefox`, `webkit`).
-- `browsers.chrome` / `browsers.firefox` / `browsers.webkit`: enable specific browsers when `browsers.all` is `false`.
+- `targetProjects`: controls configured project scope (`"all"` or `['webApplication', 'mobileApplication']`).
+- `projectLabels`: display names used for project labels (`webApplication`, `mobileApplication`).
+- Browser selection is standard Playwright via `projects` in `playwright.config.ts` and optional CLI `--project=<chrome|firefox|webkit>`.
 - `baseURL`: application URL used by Playwright tests.
 - `credentials.email` / `credentials.password`: login credentials.
 - `targetProjectDefault`: default filter when `TARGET_PROJECT` is not set.
@@ -54,14 +52,8 @@ Project and credential settings are in [data/project-run-config.json](data/proje
 
 ## Covered test cases
 Current data set includes:
-- Web Application: 3 positive + 5 negative scenarios
-- Mobile Application: 3 positive + 5 negative scenarios
+- Web Application: 3 positive scenarios
+- Mobile Application: 3 positive scenarios
 
 
-Each scenario can be:
-- Positive (default): validates expected task/column/tags.
-- Negative: set `expectedResult: "negative"` and one `negativeCheck`:
-	- `taskNotFound`
-	- `taskNotInColumn`
-	- `missingTags`
-	- `projectNotFound`
+Each scenario validates expected task/column/tags.

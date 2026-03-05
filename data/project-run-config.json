@@ -1,28 +1,14 @@
 {
   "credentials": {
-    "email": "****",
-    "password": "********"
+    "email": "admin",
+    "password": "password123"
   },
-
   "baseURL": "https://animated-gingersnap-8cf7f2.netlify.app/",
   
   "targetProjectDefault": "all",
-
-  "projects": {
+  "targetProjects": "all",
+  "projectLabels": {
     "webApplication": "Web Application",
     "mobileApplication": "Mobile Application"
-  },
-
-  "execution": {
-    "all": true,
-    "webApplication": true,
-    "mobileApplication": true
-  },
-
-  "browsers": {
-    "all": true,
-    "chrome": true,
-    "firefox": true,
-    "webkit": true
   }
 }

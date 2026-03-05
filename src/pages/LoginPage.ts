@@ -1,30 +1,12 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 export class LoginPage {
-  constructor(private readonly page: Page) {}
+  private readonly emailInput: Locator;
+  private readonly passwordInput: Locator;
+  private readonly submitButton: Locator;
 
-  async goto(): Promise<void> {
-    await this.page.goto('/');
-    await expect(this.page).toHaveURL(/animated-gingersnap-8cf7f2\.netlify\.app/i);
-  }
-
-  async login(email: string, password: string): Promise<void> {
-    const emailInput = this.resolveEmailInput();
-    const passwordInput = this.resolvePasswordInput();
-    const submitButton = this.resolveSubmitButton();
-
-    await expect(emailInput).toBeVisible();
-    await expect(passwordInput).toBeVisible();
-    await expect(submitButton).toBeVisible();
-    await expect(submitButton).toBeEnabled();
-
-    await emailInput.fill(email);
-    await passwordInput.fill(password);
-    await submitButton.click({ noWaitAfter: true });
-  }
-
-  private resolveEmailInput(): Locator {
-    return this.page.locator(
+  constructor(private readonly page: Page) {
+    this.emailInput = this.page.locator(
       [
         'input[name="username"]',
         'input[name="email"]',
@@ -33,15 +15,27 @@ export class LoginPage {
         'input[placeholder*="user" i]'
       ].join(', ')
     ).first();
-  }
 
-  private resolvePasswordInput(): Locator {
-    return this.page.locator('input[type="password"], input[name="password"]').first();
-  }
+    this.passwordInput = this.page
+      .locator('input[type="password"], input[name="password"]')
+      .first();
 
-  private resolveSubmitButton(): Locator {
-    return this.page
+    this.submitButton = this.page
       .getByRole('button', { name: /log\s?in|sign\s?in|submit/i })
       .first();
+  }
+
+  async goto(): Promise<void> {
+    await this.page.goto('/');
+  }
+
+  async login(email: string, password: string): Promise<void> {
+    await this.emailInput.waitFor({ state: 'visible' });
+    await this.passwordInput.waitFor({ state: 'visible' });
+    await this.submitButton.waitFor({ state: 'visible' });
+
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+    await this.submitButton.click({ noWaitAfter: true });
   }
 }

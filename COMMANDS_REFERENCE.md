@@ -3,6 +3,10 @@
 PowerShell command reference for all requested run combinations.
 
 ## Local
+### 0) All tests (Web + Mobile) for all browsers
+```powershell
+Remove-Item Env:TARGET_PROJECT -ErrorAction SilentlyContinue; npm run test:allure
+```
 
 ### 1) Web Application for all browsers
 ```powershell
@@ -44,10 +48,9 @@ $env:TARGET_PROJECT="Mobile Application"; npm run test:allure -- --project=firef
 $env:TARGET_PROJECT="Mobile Application"; npm run test:allure -- --project=webkit
 ```
 
-
 ## Docker
 
-### 1) All tests for all browsers
+### 1) All tests (Web + Mobile) for all browsers
 ```powershell
 docker compose build tests-all; docker compose run --rm tests-all
 ```
@@ -107,9 +110,9 @@ docker compose build tests-mobile; docker compose run --rm tests-mobile npm run 
 docker compose build tests-mobile; docker compose run --rm tests-mobile npm run test:allure:docker:mobile -- --project=webkit
 ```
 
-## Report commands
+## Report Commands
 
 ```powershell
-npm run allure:generate
-npm run allure:open
+npm run allure:generate;npm run allure:open
+
 ```
