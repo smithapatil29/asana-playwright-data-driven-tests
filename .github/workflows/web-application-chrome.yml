@@ -35,17 +35,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout success
+        run: echo "Checkout completed successfully."
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
 
+      - name: Setup Node.js success
+        run: echo "Node.js setup completed successfully."
+
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          echo "Dependency installation completed successfully."
 
       - name: Install Playwright browser
-        run: npx playwright install --with-deps ${{ github.event.inputs.browser }}
+        run: |
+          npx playwright install --with-deps ${{ github.event.inputs.browser }}
+          echo "Playwright browser installation completed successfully."
 
       - name: Debug secret presence (safe)
         env:
@@ -65,6 +75,7 @@ jobs:
 
           echo "ASANA_EMAIL: $email_status"
           echo "ASANA_PASSWORD: $password_status"
+          echo "Secret presence check completed successfully."
 
       - name: Validate required secrets
         env:
@@ -75,6 +86,7 @@ jobs:
             echo "Missing secrets. Add ASANA_EMAIL and ASANA_PASSWORD in GitHub repo secrets."
             exit 1
           fi
+          echo "Secrets validation passed."
 
       - name: Inject credentials into runtime config
         env:
@@ -82,9 +94,12 @@ jobs:
           ASANA_PASSWORD: ${{ secrets.ASANA_PASSWORD }}
         run: |
           node -e "const fs=require('fs'); const p='data/project-run-config.json'; const cfg=JSON.parse(fs.readFileSync(p,'utf8')); cfg.credentials=cfg.credentials||{}; cfg.credentials.email=process.env.ASANA_EMAIL; cfg.credentials.password=process.env.ASANA_PASSWORD; fs.writeFileSync(p, JSON.stringify(cfg, null, 2));"
+          echo "Credential injection completed successfully."
 
       - name: Run tests
-        run: npm run test:allure -- --project=${{ github.event.inputs.browser }}
+        run: |
+          npm run test:allure -- --project=${{ github.event.inputs.browser }}
+          echo "Test execution completed successfully."
 
       - name: Upload test artifacts
         if: always()
@@ -97,3 +112,7 @@ jobs:
             playwright-report/**
             test-results/**
           if-no-files-found: warn
+
+      - name: Upload artifacts success
+        if: always()
+        run: echo "Artifact upload step completed successfully."
