@@ -11,7 +11,8 @@ export class BoardPage {
     this.columnContainers = this.page.locator('div, section, article');
   }
 
-  async waitForLoaded(): Promise<void> {
+  async waitForLoaded(state: 'load' | 'domcontentloaded' | 'networkidle' = 'load'): Promise<void> {
+    await this.page.waitForLoadState(state);
     await this.navProjects.first().waitFor({ state: 'visible' });
   }
 

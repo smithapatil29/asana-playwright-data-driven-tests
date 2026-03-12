@@ -18,7 +18,7 @@ for (const [projectName, projectScenarios] of Object.entries(categorizedTestScen
 
         await page.goto('/');
 
-        await boardPage.waitForLoaded();
+        await boardPage.waitForLoaded('domcontentloaded');
 
         await boardPage.openProject(testScenario.project);
 
