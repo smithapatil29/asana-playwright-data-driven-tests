@@ -47,6 +47,25 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install --with-deps ${{ github.event.inputs.browser }}
 
+      - name: Debug secret presence (safe)
+        env:
+          ASANA_EMAIL: ${{ secrets.ASANA_EMAIL }}
+          ASANA_PASSWORD: ${{ secrets.ASANA_PASSWORD }}
+        run: |
+          email_status="set"
+          password_status="set"
+
+          if [ -z "$ASANA_EMAIL" ]; then
+            email_status="missing"
+          fi
+
+          if [ -z "$ASANA_PASSWORD" ]; then
+            password_status="missing"
+          fi
+
+          echo "ASANA_EMAIL: $email_status"
+          echo "ASANA_PASSWORD: $password_status"
+
       - name: Validate required secrets
         env:
           ASANA_EMAIL: ${{ secrets.ASANA_EMAIL }}
