@@ -1,4 +1,4 @@
-name: Web Application Chrome Tests
+name: Data-Driven Playwright Tests
 
 on:
   workflow_dispatch:
@@ -6,17 +6,19 @@ on:
       target_project:
         description: Target project label
         required: true
-        default: Web Application
+        default: Web Application and Mobile Application
         type: choice
         options:
+          - Web Application and Mobile Application
           - Web Application
           - Mobile Application
       browser:
         description: Playwright browser project
         required: true
-        default: chrome
+        default: all
         type: choice
         options:
+          - all
           - chrome
           - firefox
           - webkit
@@ -25,10 +27,9 @@ permissions:
   contents: read
 
 jobs:
-  web-app-chrome:
+  run-data-driven-tests:
     runs-on: ubuntu-latest
     env:
-      TARGET_PROJECT: ${{ github.event.inputs.target_project }}
       CI: true
 
     steps:
@@ -52,15 +53,30 @@ jobs:
           npm ci
           echo "Dependency installation completed successfully."
 
+      - name: Resolve runtime selections
+        run: |
+          TARGET_INPUT="${{ github.event.inputs.target_project }}"
+          if [ "$TARGET_INPUT" = "Web Application and Mobile Application" ]; then
+            echo "TARGET_PROJECT=all" >> "$GITHUB_ENV"
+          else
+            echo "TARGET_PROJECT=$TARGET_INPUT" >> "$GITHUB_ENV"
+          fi
+          echo "RUNTIME_BROWSER=${{ github.event.inputs.browser }}" >> "$GITHUB_ENV"
+          echo "Runtime selection mapping completed successfully."
+
       - name: Install Playwright browser
         run: |
-          INSTALL_BROWSER="${{ github.event.inputs.browser }}"
+          INSTALL_BROWSER="$RUNTIME_BROWSER"
 
-          if [ "$INSTALL_BROWSER" = "chrome" ]; then
-            INSTALL_BROWSER="chromium"
+          if [ "$INSTALL_BROWSER" = "all" ]; then
+            npx playwright install --with-deps chromium firefox webkit
+          else
+            if [ "$INSTALL_BROWSER" = "chrome" ]; then
+              INSTALL_BROWSER="chromium"
+            fi
+            npx playwright install --with-deps "$INSTALL_BROWSER"
           fi
 
-          npx playwright install --with-deps "$INSTALL_BROWSER"
           echo "Playwright browser installation completed successfully."
 
       - name: Debug secret presence (safe)
@@ -104,7 +120,11 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run test:allure -- --project=${{ github.event.inputs.browser }}
+          if [ "$RUNTIME_BROWSER" = "all" ]; then
+            npm run test:allure
+          else
+            npm run test:allure -- --project="$RUNTIME_BROWSER"
+          fi
           echo "Test execution completed successfully."
 
       - name: Upload test artifacts
