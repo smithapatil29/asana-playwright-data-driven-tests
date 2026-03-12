@@ -62,7 +62,7 @@ export const test = base.extend<{}, WorkerFixtures>({
 
       await use(authFile);
     },
-    { scope: 'worker' }
+    { scope: 'worker', timeout: 120_000 }
   ]
 });
 
