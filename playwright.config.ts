@@ -23,7 +23,7 @@ export default defineConfig({
   ],
   use: {
     baseURL: runConfig.baseURL,
-    headless: true,
+    headless: false,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
