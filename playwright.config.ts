@@ -23,7 +23,8 @@ export default defineConfig({
   ],
   use: {
     baseURL: runConfig.baseURL,
-    headless: false,
+    // CI runners usually do not have a display server, so force headless there.
+    headless: process.env.CI ? true : true,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
