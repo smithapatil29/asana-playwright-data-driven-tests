@@ -54,7 +54,13 @@ jobs:
 
       - name: Install Playwright browser
         run: |
-          npx playwright install --with-deps ${{ github.event.inputs.browser }}
+          INSTALL_BROWSER="${{ github.event.inputs.browser }}"
+
+          if [ "$INSTALL_BROWSER" = "chrome" ]; then
+            INSTALL_BROWSER="chromium"
+          fi
+
+          npx playwright install --with-deps "$INSTALL_BROWSER"
           echo "Playwright browser installation completed successfully."
 
       - name: Debug secret presence (safe)
