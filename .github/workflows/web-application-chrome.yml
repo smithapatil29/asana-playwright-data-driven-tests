@@ -1,75 +1,50 @@
-name: Web Application Chrome Tests
-
-on:
-  workflow_dispatch:
-    inputs:
-      target_project:
-        description: Target project label
-        required: true
-        default: Web Application
-        type: choice
-        options:
-          - Web Application
-          - Mobile Application
-      browser:
-        description: Playwright browser project
-        required: true
-        default: chrome
-        type: choice
-        options:
-          - chrome
-          - firefox
-          - webkit
-
-permissions:
-  contents: read
-
 jobs:
   web-app-chrome:
     runs-on: ubuntu-latest
     env:
       TARGET_PROJECT: ${{ github.event.inputs.target_project }}
       CI: true
+      ASANA_EMAIL: ${{ secrets.ASANA_EMAIL }}
+      ASANA_PASSWORD: ${{ secrets.ASANA_PASSWORD }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
 
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps ${{ github.event.inputs.browser }}
+      - run: npx playwright install --with-deps ${{ github.event.inputs.browser }}
 
       - name: Validate required secrets
-        env:
-          ASANA_EMAIL: ${{ secrets.ASANA_EMAIL }}
-          ASANA_PASSWORD: ${{ secrets.ASANA_PASSWORD }}
         run: |
+          set -e
           if [ -z "$ASANA_EMAIL" ] || [ -z "$ASANA_PASSWORD" ]; then
             echo "Missing secrets. Add ASANA_EMAIL and ASANA_PASSWORD in GitHub repo secrets."
             exit 1
           fi
+          echo "Secrets validated ✅"
 
       - name: Inject credentials into runtime config
-        env:
-          ASANA_EMAIL: ${{ secrets.ASANA_EMAIL }}
-          ASANA_PASSWORD: ${{ secrets.ASANA_PASSWORD }}
         run: |
-          node -e "const fs=require('fs'); const p='data/project-run-config.json'; const cfg=JSON.parse(fs.readFileSync(p,'utf8')); cfg.credentials=cfg.credentials||{}; cfg.credentials.email=process.env.ASANA_EMAIL; cfg.credentials.password=process.env.ASANA_PASSWORD; fs.writeFileSync(p, JSON.stringify(cfg, null, 2));"
+          CONFIG_FILE="data/project-run-config.json"
+          if [ ! -f "$CONFIG_FILE" ]; then echo "{}" > "$CONFIG_FILE"; fi
+          node -e "
+            const fs=require('fs');
+            const cfg=JSON.parse(fs.readFileSync('$CONFIG_FILE','utf8'));
+            cfg.credentials = cfg.credentials || {};
+            cfg.credentials.email = process.env.ASANA_EMAIL;
+            cfg.credentials.password = process.env.ASANA_PASSWORD;
+            fs.writeFileSync('$CONFIG_FILE', JSON.stringify(cfg, null, 2));
+          "
 
-      - name: Run tests
-        run: npm run test:allure -- --project=${{ github.event.inputs.browser }}
+      - run: npm run test:allure -- --project=${{ github.event.inputs.browser }}
 
-      - name: Upload test artifacts
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: playwright-allure-artifacts
           path: |
