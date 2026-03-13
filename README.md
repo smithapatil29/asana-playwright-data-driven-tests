@@ -30,6 +30,49 @@ Command references:
 
 Note: Docker services use Docker-safe scripts that clean report folder contents (not the mounted folders themselves).
 
+## Run with GitHub Actions
+Workflow file:
+- [.github/workflows/data-driven-tests.yml](.github/workflows/data-driven-tests.yml)
+
+### Required repository secrets
+Add these in `Settings -> Secrets and variables -> Actions`:
+- `ASANA_EMAIL`
+- `ASANA_PASSWORD`
+
+### Manual run
+1. Open the repository `Actions` tab.
+2. Open workflow `Data-Driven Playwright Tests`.
+3. Click `Run workflow`.
+4. Choose runtime inputs:
+- `target_project`:
+	- `Web Application and Mobile Application` (default)
+	- `Web Application`
+	- `Mobile Application`
+- `browser`:
+	- `all` (default)
+	- `chrome`
+	- `firefox`
+	- `webkit`
+
+Runtime behavior:
+- If `target_project=Web Application and Mobile Application`, workflow sets `TARGET_PROJECT=all`.
+- If `browser=all`, workflow runs all Playwright projects.
+- If a browser is selected, workflow runs only that browser (`--project=<browser>`).
+
+### Artifacts and report
+Each run uploads `playwright-allure-artifacts` containing:
+- `allure-results`
+- `allure-report` (if generated in run)
+- `playwright-report`
+- `test-results`
+
+To generate/open Allure locally from downloaded artifacts (Windows CMD):
+```cmd
+cd /d "C:\path\to\playwright-allure-artifacts"
+npx allure-commandline generate allure-results --clean -o allure-report
+npx allure-commandline open allure-report
+```
+
 ## Config
 Project and credential settings are in [data/project-run-config.json](data/project-run-config.json):
 - `targetProjects`: controls configured project scope (`"all"` or `['webApplication', 'mobileApplication']`).
